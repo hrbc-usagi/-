@@ -53,7 +53,7 @@
     .btn-copy { padding: 8px 16px; background: #38a169; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; }
     .btn-copy:hover { background: #2f855a; }
     
-    #resultText { width: 100%; height: 360px; font-family: monospace; font-size: 13px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; box-sizing: border-box; white-space: pre-wrap; }
+    #resultText { width: 100%; height: 420px; font-family: monospace; font-size: 13px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; box-sizing: border-box; white-space: pre-wrap; }
   </style>
 </head>
 <body>
@@ -67,7 +67,6 @@
 
   <form id="orderForm">
     
-    <!-- 1. 用途 -->
     <div class="form-group">
       <label>1. 用途 <span style="color:#e53e3e;">*</span></label>
       <div class="radio-row">
@@ -75,16 +74,23 @@
         <label class="radio-label"><input type="radio" name="useType" value="その他"> その他</label>
       </div>
       <div class="input-row" style="margin-top: 10px;">
-        <span style="font-size:13px; width:80px; shrink:0;">シナリオ名：</span>
+        <span style="font-size:13px; width:130px; shrink:0;">シナリオ名：</span>
         <input type="text" id="scenarioName" placeholder="※任意（お教えいただけるとシナリオに雰囲気を合わせやすくなります）">
       </div>
       <div class="input-row">
-        <span style="font-size:13px; width:80px; shrink:0;">PC名：</span>
-        <input type="text" id="pcName" placeholder="※任意">
+        <span style="font-size:13px; width:130px; shrink:0;">HO番号・HO名：</span>
+        <input type="text" id="hoName" placeholder="※任意（例：HO1、HO探偵 など）">
+      </div>
+      <div class="input-row">
+        <span style="font-size:13px; width:130px; shrink:0;">PC名：</span>
+        <input type="text" id="pcName" placeholder="例：田中 一郎（たなか いちろう） ※任意">
+      </div>
+      <div class="input-row">
+        <span style="font-size:13px; width:130px; shrink:0;">キャラクターシート：</span>
+        <input type="text" id="csUrl" placeholder="※任意（URLなど）">
       </div>
     </div>
 
-    <!-- 2. 性別／年齢 -->
     <div class="form-group">
       <label>2. 性別／年齢 <span style="color:#e53e3e;">*</span></label>
       <div class="radio-row">
@@ -98,7 +104,6 @@
       </div>
     </div>
 
-    <!-- 3. 身長・体格 -->
     <div class="form-group">
       <label>3. 身長・体格 <span style="color:#e53e3e;">*</span></label>
       <div class="input-row">
@@ -121,13 +126,11 @@
       </div>
     </div>
 
-    <!-- 4. イメージカラー -->
     <div class="form-group">
       <label>4. イメージカラー <span style="color:#e53e3e;">*</span></label>
       <input type="text" id="color" placeholder="例：くすんだブルー、赤と黒、#000000 など" required>
     </div>
 
-    <!-- 5. 雰囲気・外見の特徴 -->
     <div class="form-group">
       <label>5. 雰囲気・外見の特徴 <span style="color:#e53e3e;">*</span></label>
       <div class="input-row">
@@ -136,7 +139,7 @@
       </div>
       <div class="input-row">
         <span style="font-size:13px; width:85px; shrink:0;">髪色 <span style="color:#e53e3e;">*</span>：</span>
-        <input type="text" id="hairColor" placeholder="例：黒 #000000 など">
+        <input type="text" id="hairColor" placeholder="例：黒、くすんだブルー、#000000 など">
       </div>
       <div class="input-row">
         <span style="font-size:13px; width:85px; shrink:0;">目の形 <span style="color:#e53e3e;">*</span>：</span>
@@ -144,30 +147,29 @@
       </div>
       <div class="input-row">
         <span style="font-size:13px; width:85px; shrink:0;">瞳の色 <span style="color:#e53e3e;">*</span>：</span>
-        <input type="text" id="eyeColor" placeholder="例：黒 #000000 など">
+        <input type="text" id="eyeColor" placeholder="例：黒、くすんだブルー、#000000 など">
       </div>
       <div class="input-row">
         <span style="font-size:13px; width:85px; shrink:0;">その他の色：</span>
         <input type="text" id="otherColor" placeholder="例：差し色として赤色のメッシュあり など（任意）">
       </div>
-      <div style="margin-top: 10px;">
-        <span style="font-size:13px; font-weight:bold; display:block; margin-bottom:4px;">性格 <span style="color:#e53e3e;">*</span>：</span>
-        <textarea id="personality" placeholder="例：穏やか、元気、人見知り等、一言でもOK"></textarea>
-      </div>
     </div>
 
-    <!-- 6. 服装 -->
     <div class="form-group">
-      <label>6. 服装</label>
+      <label>6. 性格 <span style="color:#e53e3e;">*</span></label>
+      <textarea id="personality" placeholder="例：穏やか、元気、人見知り等、一言でもOK"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>7. 服装</label>
       <div class="info-text">
         ※画像による資料がある場合は一言でもOKです！
       </div>
       <textarea id="outfit" placeholder="例：シナリオ指定の制服を着用。上にパーカーを羽織っている など"></textarea>
     </div>
 
-    <!-- 7. 持ち物 -->
     <div class="form-group">
-      <label>7. 持ち物</label>
+      <label>8. 持ち物</label>
       <div class="radio-row">
         <label class="radio-label"><input type="radio" name="hasProp" value="なし" checked onclick="togglePropInput(false)"> なし</label>
         <label class="radio-label"><input type="radio" name="hasProp" value="あり" onclick="togglePropInput(true)"> あり</label>
@@ -177,25 +179,22 @@
       </div>
     </div>
 
-    <!-- 8. その他の特徴 -->
     <div class="form-group">
-      <label>8. その他の特徴</label>
+      <label>9. その他の特徴</label>
       <textarea id="otherFeatures" placeholder="例：右目の下に泣きボクロ、八重歯が見える、左腕に傷痕あり など"></textarea>
       <div class="notice-text">
         ※こだわりが強い箇所・外せない要素がある場合、必ずこちらに全てご記入ください。
       </div>
     </div>
 
-    <!-- 9. ポーズのご希望 -->
     <div class="form-group">
-      <label>9. ポーズのご希望</label>
+      <label>10. ポーズのご希望</label>
       <span class="sub-label">ご指定がない場合は「おまかせ」とお書きください。</span>
       <input type="text" id="pose" placeholder="例：右手を腰に当てて少し首を傾げている、おまかせ など">
     </div>
 
-    <!-- 10. 表情差分の追加 -->
     <div class="form-group">
-      <label>10. 表情差分の追加（基本3種＋追加）</label>
+      <label>11. 表情差分の追加（基本3種＋追加）</label>
       <span class="sub-label">基本料金内で【3種まで】選択可能です。（4種目以降は1種につき+¥500）<br>表情の詳細の記入は任意です。</span>
       
       <div class="checkbox-group">
@@ -234,9 +233,8 @@
       </div>
     </div>
 
-    <!-- 11. 追加オプション・ご要望 -->
     <div class="form-group">
-      <label>11. 追加オプション・ご要望</label>
+      <label>12. 追加オプション・ご要望</label>
       <div class="checkbox-group">
         <label class="checkbox-label"><input type="checkbox" id="optCombat" onclick="toggleCombatPoseInput(this.checked)"> 戦闘立ち絵の追加</label>
         <div style="margin-left: 24px;">
@@ -252,18 +250,16 @@
       </div>
     </div>
 
-    <!-- 12. ご希望の納期 -->
     <div class="form-group">
-      <label>12. ご希望の納期 <span style="color:#e53e3e;">*</span></label>
+      <label>13. ご希望の納期 <span style="color:#e53e3e;">*</span></label>
       <input type="date" id="deadlineDate">
       <div class="notice-text">
         ※選択された日付の23:59が納期となります。
       </div>
     </div>
 
-    <!-- 13. その他・備考 -->
     <div class="form-group">
-      <label>13. その他・備考</label>
+      <label>14. その他・備考</label>
       <textarea id="remarks" placeholder="例：リピート依頼です。ペア立ち絵の依頼です など"></textarea>
     </div>
 
@@ -271,7 +267,6 @@
 
   </form>
 
-  <!-- 生成結果表示エリア -->
   <div class="output-section">
     <div class="output-header">
       <h2>生成された文面</h2>
@@ -364,11 +359,15 @@
       // 1. 用途
       const useType = document.querySelector('input[name="useType"]:checked').value;
       const scenarioName = document.getElementById('scenarioName').value.trim();
+      const hoName = document.getElementById('hoName').value.trim();
       const pcName = document.getElementById('pcName').value.trim();
+      const csUrl = document.getElementById('csUrl').value.trim();
       
       let useDetails = [`・用途：${useType}`];
       if (scenarioName) useDetails.push(`・シナリオ名：${scenarioName}`);
+      if (hoName) useDetails.push(`・HO番号・HO名：${hoName}`);
       if (pcName) useDetails.push(`・PC名：${pcName}`);
+      if (csUrl) useDetails.push(`・キャラクターシート：${csUrl}`);
       const useStr = useDetails.join('\n');
 
       // 2. 性別・年齢
@@ -393,7 +392,7 @@
       // 4. カラー
       const color = document.getElementById('color').value || "未入力";
 
-      // 5. 外見の特徴・性格
+      // 5. 外見の特徴
       const otherColor = document.getElementById('otherColor').value.trim();
       let appearanceLines = [
         `・髪型：${hairStyle}`,
@@ -402,8 +401,6 @@
         `・瞳の色：${eyeColor}`
       ];
       if (otherColor) appearanceLines.push(`・その他の色：${otherColor}`);
-      appearanceLines.push(`・性格：${personality}`);
-
       const appearanceStr = appearanceLines.join('\n');
 
       // 6. 服装
@@ -459,7 +456,14 @@
       const remarks = document.getElementById('remarks').value || "特になし";
 
       // テキスト組み立て
-      const templateText = `【立ち絵ご依頼テンプレート】
+      const templateText = `※※※※※
+・初めてのご依頼の場合、必ずメッセージ内にご依頼主様のお名前を添えてください。
+・資料はできる限り詳しく、または複数ご用意ください。
+・指定の制服・小物・記号等がある場合、必ず資料に含めてください。
+※※※※※
+
+■■立ち絵ご依頼テンプレート■■
+（ツール使用）
 
 【用途】
 ${useStr}
@@ -473,8 +477,11 @@ ${heightBodyStr}
 【イメージカラー】
 ${color}
 
-【雰囲気・外見の特徴・性格】
+【雰囲気・外見の特徴】
 ${appearanceStr}
+
+【性格】
+${personality}
 
 【服装】
 ${outfit}
@@ -521,4 +528,4 @@ ${remarks}`;
     }
   </script>
 </body>
-</html></html>
+</html>
