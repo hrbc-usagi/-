@@ -5,280 +5,469 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRPG立ち絵 ご依頼テンプレート作成ツール</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; line-height: 1.6; color: #333; background-color: #f7fafc; }
-    h1 { font-size: 20px; color: #2c3e50; text-align: center; margin-bottom: 20px; }
-    .intro-box { background: #ebf8ff; border: 1px solid #bee3f8; border-radius: 8px; padding: 15px; font-size: 13px; color: #2b6cb0; margin-bottom: 25px; }
+    * { box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      width: 100%; 
+      margin: 0 auto; 
+      padding: 20px 8%; 
+      max-width: 1400px;
+      line-height: 1.6; 
+      color: #333; 
+      background-color: #f7fafc; 
+    }
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    h1 { font-size: 20px; color: #2c3e50; margin: 0; font-weight: bold; }
+    
+    .intro-box { background: #ebf8ff; border: 1px solid #bee3f8; border-radius: 8px; padding: 12px 15px; font-size: 13px; color: #2b6cb0; margin-bottom: 20px; }
+    .intro-box p { margin: 0; }
+    .intro-box p + p { margin-top: 8px; }
     .intro-box a { color: #2b6cb0; font-weight: bold; text-decoration: underline; }
     .intro-box a:hover { color: #2c5282; }
-    
-    .form-group { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin-bottom: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+
+    /* 左右レイアウト：料金表をスリム (280px固定) に設定 */
+    .two-columns { 
+      display: grid; 
+      grid-template-columns: 280px 1fr; 
+      gap: 20px; 
+      width: 100%; 
+      align-items: start; 
+      transition: all 0.3s ease;
+    }
+    .two-columns.price-hidden {
+      grid-template-columns: 1fr;
+    }
+
+    @media (max-width: 900px) { 
+      body { padding: 15px; }
+      .two-columns { grid-template-columns: 1fr; } 
+    }
+
+    .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); margin-bottom: 15px; }
+    .card h2 { font-size: 15px; margin-top: 0; margin-bottom: 12px; color: #2c3e50; border-bottom: 2px solid #edf2f7; padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group:last-child { margin-bottom: 0; }
     .form-group label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #2d3748; }
     .sub-label { font-size: 12px; color: #718096; font-weight: normal; margin-bottom: 8px; display: block; }
     
-    /* ※印の2行目以降の文頭を揃える指定 */
     .notice-text { font-size: 11px; color: #e53e3e; margin-top: 6px; line-height: 1.4; padding-left: 1em; text-indent: -1em; }
+    .notice-text-top { font-size: 11px; color: #e53e3e; margin-bottom: 6px; line-height: 1.4; padding-left: 1em; text-indent: -1em; }
     .info-text { font-size: 11px; color: #718096; margin-bottom: 6px; line-height: 1.4; padding-left: 1em; text-indent: -1em; }
     
-    input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-    textarea { height: 80px; resize: vertical; }
+    input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; margin-bottom: 4px; }
+    textarea { height: 70px; resize: vertical; }
     
-    /* プレースホルダー（記入例）の文字色を統一・薄く指定 */
     input::placeholder, textarea::placeholder {
       color: #a0aec0;
-      opacity: 1; /* Firefox対策 */
+      opacity: 1;
     }
 
-    /* インライン・ラジオ・チェックボックス */
-    .radio-row { display: flex; gap: 15px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
-    .radio-label { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: normal !important; cursor: pointer; }
-    .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
-    .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: normal !important; cursor: pointer; }
+    .radio-row { display: flex; gap: 15px; align-items: center; margin-bottom: 6px; flex-wrap: wrap; }
+    .radio-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: normal !important; cursor: pointer; }
+    .checkbox-group { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+    .checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: normal !important; cursor: pointer; }
     
-    /* 表情差分用の横並び入力行 */
     .diff-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-    .diff-row .checkbox-label { min-width: 120px; }
-    .diff-row input[type="text"] { flex: 1; min-width: 200px; }
+    .diff-row .checkbox-label { min-width: 110px; }
+    .diff-row input[type="text"] { flex: 1; min-width: 180px; margin-bottom: 0; }
 
-    .input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
-    .input-row input { flex: 1; }
+    .input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+    .input-row input { flex: 1; margin-bottom: 0; }
 
-    /* オプション項目の点線区切り */
-    .opt-divider { border: none; border-top: 1px dashed #cbd5e0; margin: 12px 0; }
+    .opt-divider { border: none; border-top: 1px dashed #cbd5e0; margin: 10px 0; }
 
-    /* 生成ボタン・出力 */
-    .btn-generate { width: 100%; padding: 14px; background: #3182ce; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin: 20px 0; }
+    .btn-generate { width: 100%; padding: 12px; background: #3182ce; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     .btn-generate:hover { background: #2b6cb0; }
     
-    .output-section { background: #fff; border: 2px solid #cbd5e0; border-radius: 8px; padding: 20px; position: relative; margin-bottom: 40px; }
-    .output-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .output-header h2 { font-size: 16px; margin: 0; color: #2d3748; }
-    .btn-copy { padding: 8px 16px; background: #38a169; color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; }
+    .btn-copy { padding: 4px 10px; background: #38a169; color: #fff; border: none; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; }
     .btn-copy:hover { background: #2f855a; }
+
+    .btn-toggle-price { padding: 5px 12px; background: #edf2f7; color: #4a5568; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    .btn-toggle-price:hover { background: #e2e8f0; }
     
-    #resultText { width: 100%; height: 420px; font-family: monospace; font-size: 13px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; box-sizing: border-box; white-space: pre-wrap; }
+    #resultText { width: 100%; height: 380px; font-family: monospace; font-size: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; box-sizing: border-box; white-space: pre-wrap; margin-bottom: 0; }
+
+    /* スクロール追従（position: sticky） */
+    .price-card { 
+      position: sticky; 
+      top: 20px; 
+      transition: all 0.3s ease; 
+    }
+    .price-card.hidden { display: none; }
+    
+    .price-subtext {
+      font-size: 10.5px;
+      color: #4a5568;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .price-subtext p {
+      margin: 0;
+      padding-left: 0.8em;
+      text-indent: -0.8em;
+    }
+    .price-subtext p + p {
+      margin-top: 3px;
+    }
+
+    .price-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 10px; }
+    .price-table th, .price-table td { border: 1px solid #e2e8f0; padding: 5px 6px; text-align: left; }
+    .price-table th { background-color: #f7fafc; color: #4a5568; }
+    .badge-skima { background: #feebc8; color: #c05621; font-size: 9px; padding: 1px 4px; border-radius: 3px; font-weight: bold; }
+    .badge-tsunagu { background: #ebf8ff; color: #2b6cb0; font-size: 9px; padding: 1px 4px; border-radius: 3px; font-weight: bold; }
+    .text-discount { color: #e53e3e; font-weight: bold; }
+    .text-express { color: #d69e2e; font-weight: bold; }
+    
+    .info-list { font-size: 11px; color: #4a5568; padding-left: 14px; margin: 4px 0; line-height: 1.5; }
+    .info-list li { margin-bottom: 3px; }
+    .notice-box { background: #fffaf0; border: 1px solid #feebc8; border-radius: 4px; padding: 8px; font-size: 10px; color: #9c4221; margin-top: 8px; line-height: 1.4; }
   </style>
 </head>
 <body>
 
-  <h1>🎨 TRPG立ち絵 ご依頼テンプレート作成ツール</h1>
-
-  <div class="intro-box">
-    ここは <a href="https://x.com/xox_usagii" target="_blank" rel="noopener noreferrer">はるぶち</a> への立ち絵のご依頼時に使用いただけるご依頼テンプレート作成ツールです。<br><br>
-    フォームに入力・選択して「テンプレート文面を生成する」を押すと、一番下に記入済みテンプレートが作成されます。<br>
-    内容をコピーして、SKIMAやつなぐのメッセージ欄にそのまま貼り付けてご使用ください。
+  <div class="header-container">
+    <h1>🎨 TRPG立ち絵 ご依頼テンプレート作成ツール</h1>
+    <button type="button" class="btn-toggle-price" onclick="togglePriceCard()" id="topToggleBtn">料金表を非表示にする</button>
   </div>
 
-  <form id="orderForm">
-    
-    <div class="form-group">
-      <label>1. 用途 <span style="color:#e53e3e;">*</span></label>
-      <div class="radio-row">
-        <label class="radio-label"><input type="radio" name="useType" value="TRPG用立ち絵" checked> TRPG用立ち絵</label>
-        <label class="radio-label"><input type="radio" name="useType" value="その他"> その他</label>
-      </div>
-      <div class="input-row" style="margin-top: 10px;">
-        <span style="font-size:13px; width:130px; shrink:0;">シナリオ名：</span>
-        <input type="text" id="scenarioName" placeholder="※任意（お教えいただけるとシナリオに雰囲気を合わせやすくなります）">
-      </div>
-      <div class="input-row">
-        <span style="font-size:13px; width:130px; shrink:0;">HO番号・HO名：</span>
-        <input type="text" id="hoName" placeholder="※任意（例：HO1、HO探偵 など）">
-      </div>
-      <div class="input-row">
-        <span style="font-size:13px; width:130px; shrink:0;">PC名：</span>
-        <input type="text" id="pcName" placeholder="例：田中 一郎（たなか いちろう） ※任意">
-      </div>
-      <div class="input-row">
-        <span style="font-size:13px; width:130px; shrink:0;">キャラクターシート：</span>
-        <input type="text" id="csUrl" placeholder="※任意（URLなど）">
-      </div>
-    </div>
+  <div class="intro-box">
+    <p>ここは <a href="https://xfolio.jp/portfolio/hrbc_usagi" target="_blank" rel="noopener noreferrer">はるぶち</a> への立ち絵のご依頼時に使用いただけるご依頼テンプレート作成ツールです。</p>
+    <p>フォームに入力・選択して「テンプレート文面を生成する」を押すと、下に記入済みテンプレートが作成されます。<br>内容をコピーして、SKIMAやつなぐのメッセージ欄にそのまま貼り付けてご使用ください。</p>
+  </div>
 
-    <div class="form-group">
-      <label>2. 性別／年齢 <span style="color:#e53e3e;">*</span></label>
-      <div class="radio-row">
-        <label class="radio-label"><input type="radio" name="gender" value="男性" checked> 男性</label>
-        <label class="radio-label"><input type="radio" name="gender" value="女性"> 女性</label>
-        <label class="radio-label"><input type="radio" name="gender" value="その他/不明"> その他/不明</label>
-      </div>
-      <div class="input-row">
-        <span style="font-size:14px; white-space:nowrap;">年齢：</span>
-        <input type="text" id="age" placeholder="例：20歳、20代前半 などざっくりでもOK">
-      </div>
-    </div>
+  <div class="two-columns" id="mainLayout">
 
-    <div class="form-group">
-      <label>3. 身長・体格 <span style="color:#e53e3e;">*</span></label>
-      <div class="input-row">
-        <span style="font-size:14px; white-space:nowrap;">身長：</span>
-        <input type="text" id="height" placeholder="例：170cm、170cm前半 など大体でもOK">
-      </div>
-      <div class="radio-row" style="margin-top: 8px;">
-        <span style="font-size:14px; white-space:nowrap;">体格：</span>
-        <label class="radio-label"><input type="radio" name="bodyType" value="" checked> 未選択</label>
-        <label class="radio-label"><input type="radio" name="bodyType" value="細身"> 細身</label>
-        <label class="radio-label"><input type="radio" name="bodyType" value="普通"> 普通</label>
-        <label class="radio-label"><input type="radio" name="bodyType" value="がっしり"> がっしり</label>
-      </div>
-      <div style="margin-top: 8px;">
-        <input type="text" id="bodyOther" placeholder="その他特記事項（例：胸が大きい、手足が長い など任意）">
-      </div>
-      <div class="notice-text">
-        ※大体でもOKですが、制作開始後の変更は追加料金となります。<br>
-        他PCとの具体的な身長・体格差（◯cm差、頭半分差など）がある場合は必ず明記してください。
-      </div>
-    </div>
+    <!-- 左カラム：料金・仕様一覧（幅280px / スクロール追従） -->
+    <div class="price-card" id="priceCard">
+      <div class="card">
+        <h2>
+          料金・仕様一覧
+          <button type="button" class="btn-toggle-price" style="font-size: 10px; padding: 2px 6px;" onclick="togglePriceCard()">非表示</button>
+        </h2>
 
-    <div class="form-group">
-      <label>4. イメージカラー <span style="color:#e53e3e;">*</span></label>
-      <input type="text" id="color" placeholder="例：くすんだブルー、赤と黒、#000000 など" required>
-    </div>
-
-    <div class="form-group">
-      <label>5. 雰囲気・外見の特徴 <span style="color:#e53e3e;">*</span></label>
-      <div class="input-row">
-        <span style="font-size:13px; width:85px; shrink:0;">髪型 <span style="color:#e53e3e;">*</span>：</span>
-        <input type="text" id="hairStyle" placeholder="例：セミロング、センター分けウルフ など">
-      </div>
-      <div class="input-row">
-        <span style="font-size:13px; width:85px; shrink:0;">髪色 <span style="color:#e53e3e;">*</span>：</span>
-        <input type="text" id="hairColor" placeholder="例：黒、くすんだブルー、#000000 など">
-      </div>
-      <div class="input-row">
-        <span style="font-size:13px; width:85px; shrink:0;">目の形 <span style="color:#e53e3e;">*</span>：</span>
-        <input type="text" id="eyeShape" placeholder="例：やや吊り目、タレ目 など">
-      </div>
-      <div class="input-row">
-        <span style="font-size:13px; width:85px; shrink:0;">瞳の色 <span style="color:#e53e3e;">*</span>：</span>
-        <input type="text" id="eyeColor" placeholder="例：黒、くすんだブルー、#000000 など">
-      </div>
-      <div class="input-row">
-        <span style="font-size:13px; width:85px; shrink:0;">その他の色：</span>
-        <input type="text" id="otherColor" placeholder="例：差し色として赤色のメッシュあり など（任意）">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>6. 性格 <span style="color:#e53e3e;">*</span></label>
-      <textarea id="personality" placeholder="例：穏やか、元気、人見知り等、一言でもOK"></textarea>
-    </div>
-
-    <div class="form-group">
-      <label>7. 服装</label>
-      <div class="info-text">
-        ※画像による資料がある場合は一言でもOKです！
-      </div>
-      <textarea id="outfit" placeholder="例：シナリオ指定の制服を着用。上にパーカーを羽織っている など"></textarea>
-    </div>
-
-    <div class="form-group">
-      <label>8. 持ち物</label>
-      <div class="radio-row">
-        <label class="radio-label"><input type="radio" name="hasProp" value="なし" checked onclick="togglePropInput(false)"> なし</label>
-        <label class="radio-label"><input type="radio" name="hasProp" value="あり" onclick="togglePropInput(true)"> あり</label>
-      </div>
-      <div style="margin-top: 8px;">
-        <input type="text" id="propText" placeholder="持ち物の詳細（例：右手用に黒いスマホ、腰に拳銃 など）" disabled>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>9. その他の特徴</label>
-      <textarea id="otherFeatures" placeholder="例：右目の下に泣きボクロ、八重歯が見える、左腕に傷痕あり など"></textarea>
-      <div class="notice-text">
-        ※こだわりが強い箇所・外せない要素がある場合、必ずこちらに全てご記入ください。
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>10. ポーズのご希望</label>
-      <span class="sub-label">ご指定がない場合は「おまかせ」とお書きください。</span>
-      <input type="text" id="pose" placeholder="例：右手を腰に当てて少し首を傾げている、おまかせ など">
-    </div>
-
-    <div class="form-group">
-      <label>11. 表情差分の追加（基本3種＋追加）</label>
-      <span class="sub-label">基本料金内で【3種まで】選択可能です。（4種目以降は1種につき+¥500）<br>表情の詳細の記入は任意です。</span>
-      
-      <div class="checkbox-group">
-        <div class="diff-row">
-          <label class="checkbox-label"><input type="checkbox" name="diff" value="笑顔"> 笑顔</label>
-          <input type="text" class="diff-detail" placeholder="例：歯を見せた満面の笑み など（任意）">
+        <div class="price-subtext">
+          <p>・販売手数料の関係で「つなぐ」の方が少しお安くなっています。</p>
+          <p>・どちらからご依頼いただいても内容・納期・クオリティに差はありません。</p>
         </div>
-        <div class="diff-row">
-          <label class="checkbox-label"><input type="checkbox" name="diff" value="驚き"> 驚き</label>
-          <input type="text" class="diff-detail" placeholder="例：目を真ん丸にして驚いている顔 など（任意）">
-        </div>
-        <div class="diff-row">
-          <label class="checkbox-label"><input type="checkbox" name="diff" value="怒り"> 怒り</label>
-          <input type="text" class="diff-detail" placeholder="例：三白眼寄りの怒り顔 など（任意）">
-        </div>
-        <div class="diff-row">
-          <label class="checkbox-label"><input type="checkbox" name="diff" value="焦り／困り顔"> 焦り／困り顔</label>
-          <input type="text" class="diff-detail" placeholder="例：頬を染めて目を逸らしている顔 など（任意）">
-        </div>
-        <div class="diff-row">
-          <label class="checkbox-label"><input type="checkbox" name="diff" value="悲しみ／泣き"> 悲しみ／泣き</label>
-          <input type="text" class="diff-detail" placeholder="例：目を伏せて泣いている顔 など（任意）">
-        </div>
-        <div class="diff-row">
-          <label class="checkbox-label"><input type="checkbox" name="diff" value="青ざめ／影"> 青ざめ／影</label>
-          <input type="text" class="diff-detail" placeholder="例：SANC顔・秘匿がバレた時の瞳が真っ黒な顔 など（任意）">
-        </div>
-      </div>
 
-      <div style="margin-top: 10px;">
-        <input type="text" id="diffOther" placeholder="指定・その他（例：ドヤ顔、ウインクなど自由記述）">
-      </div>
-      <div class="notice-text">
-        ※表情差分は納品直前に作成するため、ご購入者様の確認（リテイク）は入りません。<br>
-        ご希望がある場合は必ず詳細を事前にお伝えください。
-      </div>
-    </div>
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th><span class="badge-skima">SKIMA</span></th>
+              <th><span class="badge-tsunagu">つなぐ</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>基本料金</strong> (全身)</td>
+              <td>¥10,000</td>
+              <td>¥9,000</td>
+            </tr>
+            <tr>
+              <td><strong>戦闘立ち絵</strong></td>
+              <td>+¥8,500</td>
+              <td>+¥8,000</td>
+            </tr>
+            <tr>
+              <td><strong>継続割</strong> (再依頼)</td>
+              <td colspan="2" style="text-align: center;" class="text-discount">−¥500</td>
+            </tr>
+            <tr>
+              <td><strong>特急料金</strong> (20日以内)</td>
+              <td colspan="2" style="text-align: center;" class="text-express">+¥3,000</td>
+            </tr>
+            <tr>
+              <td><strong>サイズ/形式</strong></td>
+              <td colspan="2">A4程度 / 背景透過PNG 350dpi</td>
+            </tr>
+          </tbody>
+        </table>
 
-    <div class="form-group">
-      <label>12. 追加オプション・ご要望</label>
-      <div class="checkbox-group">
-        <label class="checkbox-label"><input type="checkbox" id="optCombat" onclick="toggleCombatPoseInput(this.checked)"> 戦闘立ち絵の追加</label>
-        <div style="margin-left: 24px;">
-          <input type="text" id="optCombatPoseText" placeholder="戦闘立ち絵のポーズ（例：日本刀を構えている、おまかせ など）" disabled>
-        </div>
-        
-        <hr class="opt-divider">
+        <div style="font-size: 11px; font-weight: bold; margin-top: 8px; color: #2d3748;">📅 納期・日程目安</div>
+        <ul class="info-list">
+          <li><strong>基本納期目安：</strong>納品日の<strong>4週間前</strong>までに初回相談</li>
+          <li><strong>戦闘立ち絵：</strong>通常目安＋<strong>約1週間</strong></li>
+          <li><strong>3人以上同時：</strong>通常目安＋<strong>約2週間</strong></li>
+          <li><strong>特急料金：</strong>確定から納品まで<strong>20日以内</strong>（＋¥3,000）</li>
+        </ul>
 
-        <label class="checkbox-label"><input type="checkbox" id="optOtherCheck" onclick="toggleOptOtherInput(this.checked)"> その他</label>
-        <div style="margin-left: 24px;">
-          <input type="text" id="optOtherText" placeholder="例：相方との合わせ立ち絵です。相方の立ち絵を資料に添付します など" disabled>
+        <div style="font-size: 11px; font-weight: bold; margin-top: 8px; color: #2d3748;">🎨 共通オプション</div>
+        <ul class="info-list">
+          <li><strong>服装：</strong>装飾多・こだわり＝＋¥1,000〜</li>
+          <li><strong>描写追加：</strong>小物1点につき ＋¥500〜</li>
+          <li><strong>デザイン：</strong>完全おまかせ＝＋¥1,000〜</li>
+          <li><strong>表情差分：</strong>3種無料（追加1種 ＋¥500）</li>
+        </ul>
+
+        <div class="notice-box">
+          ※書き込み量や作業工数により変動します。<br>
+          ※継続割引は一口につき1回のみ適用です。
         </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label>13. ご希望の納期 <span style="color:#e53e3e;">*</span></label>
-      <input type="date" id="deadlineDate">
-      <div class="notice-text">
-        ※選択された日付の23:59が納期となります。
+    <!-- 右カラム：入力フォーム ＆ 生成出力 -->
+    <div>
+      <form id="orderForm">
+        <div class="card">
+          <div class="form-group">
+            <label>1. 用途 <span style="color:#e53e3e;">*</span></label>
+            <div class="radio-row">
+              <label class="radio-label"><input type="radio" name="useType" value="TRPG用立ち絵" checked> TRPG用立ち絵</label>
+              <label class="radio-label"><input type="radio" name="useType" value="その他"> その他</label>
+            </div>
+            <div class="input-row" style="margin-top: 8px;">
+              <span style="font-size:12px; width:120px; flex-shrink:0;">シナリオ名：</span>
+              <input type="text" id="scenarioName" placeholder="※任意（お教えいただけるとシナリオに雰囲気を合わせやすくなります）">
+            </div>
+            <div class="input-row">
+              <span style="font-size:12px; width:120px; flex-shrink:0;">HO番号・HO名：</span>
+              <input type="text" id="hoName" placeholder="※任意（例：HO1、HO探偵 など）">
+            </div>
+            <div class="input-row">
+              <span style="font-size:12px; width:120px; flex-shrink:0;">PC名：</span>
+              <input type="text" id="pcName" placeholder="例：田中 一郎（たなか いちろう） ※任意">
+            </div>
+            <div class="input-row">
+              <span style="font-size:12px; width:120px; flex-shrink:0;">キャラシート：</span>
+              <input type="text" id="csUrl" placeholder="※任意（URLなど）">
+            </div>
+
+            <!-- 商用利用・実績公開 -->
+            <div style="margin-top: 12px; border-top: 1px dashed #cbd5e0; padding-top: 10px;">
+              <span style="font-size:13px; font-weight:bold; color:#2d3748; display:block; margin-bottom:6px;">商用利用・実績公開：</span>
+              <div class="radio-row">
+                <label class="checkbox-label"><input type="checkbox" id="isCommercial"> 商用利用の希望あり</label>
+                <label class="checkbox-label"><input type="checkbox" id="canPublish" checked> 実績公開可 (SNS/ポートフォリオ掲載)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label>2. 性別・年齢 <span style="color:#e53e3e;">*</span></label>
+            <div class="radio-row">
+              <label class="radio-label"><input type="radio" name="gender" value="男性" checked> 男性</label>
+              <label class="radio-label"><input type="radio" name="gender" value="女性"> 女性</label>
+              <label class="radio-label"><input type="radio" name="gender" value="その他/不明"> その他/不明</label>
+            </div>
+            <div class="input-row">
+              <span style="font-size:12px; white-space:nowrap;">年齢：</span>
+              <input type="text" id="age" placeholder="例：20歳、20代前半 などざっくりでもOK">
+            </div>
+          </div>
+
+          <!-- 身長・体格（上に点線追加） -->
+          <div class="form-group" style="margin-top: 15px; border-top: 1px dashed #cbd5e0; padding-top: 15px;">
+            <label>3. 身長・体格 <span style="color:#e53e3e;">*</span></label>
+            <div class="input-row">
+              <span style="font-size:12px; white-space:nowrap;">身長：</span>
+              <input type="text" id="height" placeholder="例：170cm、170cm前半 など大体でもOK">
+            </div>
+            <div class="radio-row" style="margin-top: 6px;">
+              <span style="font-size:12px; white-space:nowrap;">体格：</span>
+              <label class="radio-label"><input type="radio" name="bodyType" value="" checked> 未選択</label>
+              <label class="radio-label"><input type="radio" name="bodyType" value="細身"> 細身</label>
+              <label class="radio-label"><input type="radio" name="bodyType" value="普通"> 普通</label>
+              <label class="radio-label"><input type="radio" name="bodyType" value="がっしり"> がっしり</label>
+            </div>
+            <div style="margin-top: 6px;">
+              <input type="text" id="bodyOther" placeholder="その他特記事項（例：胸が大きい、手足が長い など任意）">
+            </div>
+            <div class="notice-text">
+              ※大体でもOKですが、制作開始後の変更は追加料金となります。<br>
+              他PCとの具体的な身長・体格差（◯cm差、頭半分差など）がある場合は必ず明記してください。
+            </div>
+          </div>
+
+          <!-- 4. 性格 -->
+          <div class="form-group" style="margin-top: 15px; border-top: 1px dashed #cbd5e0; padding-top: 15px;">
+            <label>4. 性格 <span style="color:#e53e3e;">*</span></label>
+            <textarea id="personality" placeholder="例：穏やか、元気、人見知り等、一言でもOK"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label>5. 雰囲気・外見の特徴 <span style="color:#e53e3e;">*</span></label>
+            <div class="input-row">
+              <span style="font-size:12px; width:80px; flex-shrink:0;">髪型 <span style="color:#e53e3e;">*</span>：</span>
+              <input type="text" id="hairStyle" placeholder="例：セミロング、センター分けウルフ など">
+            </div>
+            <div class="input-row">
+              <span style="font-size:12px; width:80px; flex-shrink:0;">髪色 <span style="color:#e53e3e;">*</span>：</span>
+              <input type="text" id="hairColor" placeholder="例：黒、くすんだブルー、#000000 など">
+            </div>
+            <div class="input-row">
+              <span style="font-size:12px; width:80px; flex-shrink:0;">目の形 <span style="color:#e53e3e;">*</span>：</span>
+              <input type="text" id="eyeShape" placeholder="例：やや吊り目、タレ目 など">
+            </div>
+            <div class="input-row">
+              <span style="font-size:12px; width:80px; flex-shrink:0;">瞳の色 <span style="color:#e53e3e;">*</span>：</span>
+              <input type="text" id="eyeColor" placeholder="例：黒、くすんだブルー、#000000 など">
+            </div>
+            <div class="input-row">
+              <span style="font-size:12px; width:80px; flex-shrink:0;">その他の色：</span>
+              <input type="text" id="otherColor" placeholder="例：差し色として赤色のメッシュあり など（任意）">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>6. 服装</label>
+            <div class="info-text">
+              ※画像による資料がある場合は一言でもOKです！
+            </div>
+            <textarea id="outfit" placeholder="例：シナリオ指定の制服を着用。上にパーカーを羽織っている など"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>7. 持ち物</label>
+            <div class="radio-row">
+              <label class="radio-label"><input type="radio" name="hasProp" value="なし" checked onclick="togglePropInput(false)"> なし</label>
+              <label class="radio-label"><input type="radio" name="hasProp" value="あり" onclick="togglePropInput(true)"> あり</label>
+            </div>
+            <div style="margin-top: 6px;">
+              <input type="text" id="propText" placeholder="持ち物の詳細（例：右手用に黒いスマホ、腰に拳銃 など）" disabled>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>8. その他の特徴</label>
+            <div class="notice-text-top">
+              ※こだわりが強い箇所・外せない要素がある場合、必ずこちらに全てご記入ください。
+            </div>
+            <textarea id="otherFeatures" placeholder="例：右目の下に泣きボクロ、八重歯が見える、左腕に傷痕あり など"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>9. ポーズのご希望</label>
+            <span class="sub-label">ご指定がない場合は「おまかせ」とお書きください。</span>
+            <input type="text" id="pose" placeholder="例：右手を腰に当てて少し首を傾げている、おまかせ など">
+          </div>
+        </div>
+
+        <!-- 独立した大項目：10. 表情差分の追加 -->
+        <div class="card">
+          <div class="form-group">
+            <label>10. 表情差分の追加（基本3種＋追加）</label>
+            <span class="sub-label">基本料金内で【3種まで】選択可能です。（4種目以降は1種につき+¥500）<br>表情の詳細の記入は任意です。</span>
+            
+            <div class="checkbox-group">
+              <div class="diff-row">
+                <label class="checkbox-label"><input type="checkbox" name="diff" value="笑顔"> 笑顔</label>
+                <input type="text" class="diff-detail" placeholder="例：歯を見せた満面の笑み など（任意）">
+              </div>
+              <div class="diff-row">
+                <label class="checkbox-label"><input type="checkbox" name="diff" value="驚き"> 驚き</label>
+                <input type="text" class="diff-detail" placeholder="例：目を真ん丸にして驚いている顔 など（任意）">
+              </div>
+              <div class="diff-row">
+                <label class="checkbox-label"><input type="checkbox" name="diff" value="怒り"> 怒り</label>
+                <input type="text" class="diff-detail" placeholder="例：三白眼寄りの怒り顔 など（任意）">
+              </div>
+              <div class="diff-row">
+                <label class="checkbox-label"><input type="checkbox" name="diff" value="焦り／困り顔"> 焦り／困り顔</label>
+                <input type="text" class="diff-detail" placeholder="例：頬を染めて目を逸らしている顔 など（任意）">
+              </div>
+              <div class="diff-row">
+                <label class="checkbox-label"><input type="checkbox" name="diff" value="悲しみ／泣き"> 悲しみ／泣き</label>
+                <input type="text" class="diff-detail" placeholder="例：目を伏せて泣いている顔 など（任意）">
+              </div>
+              <div class="diff-row">
+                <label class="checkbox-label"><input type="checkbox" name="diff" value="青ざめ／影"> 青ざめ／影</label>
+                <input type="text" class="diff-detail" placeholder="例：SANC顔・秘匿がバレた時の瞳が真っ黒な顔 など（任意）">
+              </div>
+            </div>
+
+            <div style="margin-top: 8px;">
+              <input type="text" id="diffOther" placeholder="指定・その他（例：ドヤ顔、ウインクなど自由記述）">
+            </div>
+            <div class="notice-text">
+              ※表情差分は納品直前に作成するため、ご購入者様の確認（リテイク）は入りません。<br>
+              ご希望がある場合は必ず詳細を事前にお伝えください。
+            </div>
+          </div>
+        </div>
+
+        <!-- 独立した大項目：11. 追加オプション・ご要望 -->
+        <div class="card">
+          <div class="form-group">
+            <label>11. 追加オプション・ご要望</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label"><input type="checkbox" id="optCombat" onclick="toggleCombatPoseInput(this.checked)"> 戦闘立ち絵の追加</label>
+              <div style="margin-left: 24px;">
+                <input type="text" id="optCombatPoseText" placeholder="戦闘立ち絵のポーズ（例：日本刀を構えている、おまかせ など）" disabled>
+              </div>
+              
+              <hr class="opt-divider">
+
+              <label class="checkbox-label"><input type="checkbox" id="optOtherCheck" onclick="toggleOptOtherInput(this.checked)"> その他</label>
+              <div style="margin-left: 24px;">
+                <input type="text" id="optOtherText" placeholder="例：相方との合わせ立ち絵です。相方の立ち絵を資料に添付します など" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="form-group">
+            <label>12. ご希望の納期 <span style="color:#e53e3e;">*</span></label>
+            <input type="date" id="deadlineDate">
+            <div class="notice-text">
+              ※選択された日付の23:59が納期となります。
+            </div>
+          </div>
+
+          <!-- 備考（上に点線追加） -->
+          <div class="form-group" style="margin-top: 15px; border-top: 1px dashed #cbd5e0; padding-top: 15px;">
+            <label>13. 備考</label>
+            <textarea id="remarks" placeholder="例：リピート依頼です。ペア立ち絵の依頼です など"></textarea>
+          </div>
+        </div>
+
+        <button type="button" class="btn-generate" onclick="generateTemplate()">テンプレート文面を生成する</button>
+      </form>
+
+      <!-- 生成出力カード -->
+      <div class="card" id="outputCard" style="margin-top: 20px;">
+        <h2>
+          生成された文面
+          <button class="btn-copy" onclick="copyResult()">文面をコピー</button>
+        </h2>
+        <textarea id="resultText" readonly placeholder="「テンプレート文面を生成する」を押すと、ここにコピペ用のテキストが生成されます。"></textarea>
       </div>
     </div>
 
-    <div class="form-group">
-      <label>14. その他・備考</label>
-      <textarea id="remarks" placeholder="例：リピート依頼です。ペア立ち絵の依頼です など"></textarea>
-    </div>
-
-    <button type="button" class="btn-generate" onclick="generateTemplate()">テンプレート文面を生成する</button>
-
-  </form>
-
-  <div class="output-section">
-    <div class="output-header">
-      <h2>生成された文面</h2>
-      <button class="btn-copy" onclick="copyResult()">文面をコピー</button>
-    </div>
-    <textarea id="resultText" readonly placeholder="上の「テンプレート文面を生成する」を押すと、ここにコピペ用のテキストが生成されます。"></textarea>
   </div>
 
   <script>
+    function togglePriceCard() {
+      const priceCard = document.getElementById('priceCard');
+      const mainLayout = document.getElementById('mainLayout');
+      const topToggleBtn = document.getElementById('topToggleBtn');
+
+      if (priceCard.classList.contains('hidden')) {
+        priceCard.classList.remove('hidden');
+        mainLayout.classList.remove('price-hidden');
+        topToggleBtn.textContent = '料金表を非表示にする';
+      } else {
+        priceCard.classList.add('hidden');
+        mainLayout.classList.add('price-hidden');
+        topToggleBtn.textContent = '料金表を表示する';
+      }
+    }
+
     function togglePropInput(enable) {
       const propInput = document.getElementById('propText');
       propInput.disabled = !enable;
@@ -318,6 +507,11 @@
       const personality = document.getElementById('personality').value.trim();
       const deadlineDate = document.getElementById('deadlineDate').value;
 
+      if (!personality) {
+        alert("性格を入力してください。");
+        document.getElementById('personality').focus();
+        return;
+      }
       if (!hairStyle) {
         alert("髪型を入力してください。");
         document.getElementById('hairStyle').focus();
@@ -336,11 +530,6 @@
       if (!eyeColor) {
         alert("瞳の色を入力してください。");
         document.getElementById('eyeColor').focus();
-        return;
-      }
-      if (!personality) {
-        alert("性格を入力してください。");
-        document.getElementById('personality').focus();
         return;
       }
       if (!deadlineDate) {
@@ -365,12 +554,16 @@
       const hoName = document.getElementById('hoName').value.trim();
       const pcName = document.getElementById('pcName').value.trim();
       const csUrl = document.getElementById('csUrl').value.trim();
+      const isCommercial = document.getElementById('isCommercial').checked;
+      const canPublish = document.getElementById('canPublish').checked;
       
       let useDetails = [`・用途：${useType}`];
       if (scenarioName) useDetails.push(`・シナリオ名：${scenarioName}`);
       if (hoName) useDetails.push(`・HO番号・HO名：${hoName}`);
       if (pcName) useDetails.push(`・PC名：${pcName}`);
       if (csUrl) useDetails.push(`・キャラクターシート：${csUrl}`);
+      useDetails.push(`・商用利用：${isCommercial ? 'あり' : 'なし'}`);
+      useDetails.push(`・実績公開：${canPublish ? '可' : '不可'}`);
       const useStr = useDetails.join('\n');
 
       // 2. 性別・年齢
@@ -392,8 +585,8 @@
         ? `${height}（${bodyDetails.join('・')}）`
         : height;
 
-      // 4. カラー
-      const color = document.getElementById('color').value || "未入力";
+      // 4. 性格
+      // (personality変数は上部で定義済み)
 
       // 5. 外見の特徴
       const otherColor = document.getElementById('otherColor').value.trim();
@@ -471,20 +664,17 @@
 【用途】
 ${useStr}
 
-【性別／年齢】
+【性別・年齢】
 ${genderAgeStr}
 
 【身長・体格】
 ${heightBodyStr}
 
-【イメージカラー】
-${color}
+【性格】
+${personality}
 
 【雰囲気・外見の特徴】
 ${appearanceStr}
-
-【性格】
-${personality}
 
 【服装】
 ${outfit}
@@ -507,11 +697,11 @@ ${optStr}
 【ご希望の納期】
 ${deadlineStr}
 
-【その他・備考】
+【備考】
 ${remarks}`;
 
       document.getElementById('resultText').value = templateText;
-      document.querySelector('.output-section').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('outputCard').scrollIntoView({ behavior: 'smooth' });
     }
 
     function copyResult() {
