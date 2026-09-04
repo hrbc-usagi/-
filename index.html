@@ -452,6 +452,21 @@
   </div>
 
   <script>
+    // 画面読み込み時の初期化処理（スマホ等での初期非表示対応）
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth <= 900) {
+        const priceCard = document.getElementById('priceCard');
+        const mainLayout = document.getElementById('mainLayout');
+        const topToggleBtn = document.getElementById('topToggleBtn');
+
+        if (priceCard && mainLayout && topToggleBtn) {
+          priceCard.classList.add('hidden');
+          mainLayout.classList.add('price-hidden');
+          topToggleBtn.textContent = '料金表を表示する';
+        }
+      }
+    });
+
     function togglePriceCard() {
       const priceCard = document.getElementById('priceCard');
       const mainLayout = document.getElementById('mainLayout');
